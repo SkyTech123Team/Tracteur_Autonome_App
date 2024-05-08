@@ -45,7 +45,7 @@ dependencies {
     implementation("com.google.android.gms:play-services-auth:20.4.0")
     implementation("androidx.credentials:credentials:1.3.0-alpha01")
     implementation ("com.google.android.material:material:<latest_version>")
-    implementation ("com.google.firebase:firebase-firestore:22.3.0")
+    implementation ("com.google.firebase:firebase-firestore:25.0.0")
 
 //    implementation ("androidx.navigation:navigation-fragment:<latest_version>")
 //    implementation ("androidx.navigation:navigation-ui:<latest_version>")

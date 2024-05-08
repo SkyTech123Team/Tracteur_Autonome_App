@@ -15,11 +15,18 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
+
 public class CameraFragment extends Fragment {
 
     private ProgressBar superProgressBar;
     private ImageView superImageView;
     private WebView superWebView;
+
+    private FirebaseFirestore db;
 
     @Nullable
     @Override
@@ -31,7 +38,32 @@ public class CameraFragment extends Fragment {
         superWebView = rootView.findViewById(R.id.myWebView);
 
         superProgressBar.setMax(100);
-        superWebView.loadUrl("http://192.168.137.165:5000/video_feed");
+
+        db = FirebaseFirestore.getInstance();
+
+        // Recuperate l'adresse IP depuis la base de données Firebase
+        db.collection("adresseIP").document("1").get()
+                .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                        if (task.isSuccessful()) {
+                            DocumentSnapshot document = task.getResult();
+                            if (document.exists()) {
+                                String adresseIP = document.getString("adresse");
+                                if (adresseIP != null) {
+                                    loadWebView(adresseIP);
+                                }
+                            }
+                        }
+                    }
+                });
+
+        return rootView;
+    }
+
+    private void loadWebView(String adresseIP) {
+        String url = "http://" + adresseIP + ":5000/video_feed";
+        superWebView.loadUrl(url);
         superWebView.getSettings().setJavaScriptEnabled(true);
 
         superWebView.getSettings().setLoadWithOverviewMode(true);
@@ -72,7 +104,5 @@ public class CameraFragment extends Fragment {
                 superImageView.setImageBitmap(icon);
             }
         });
-
-        return rootView;
     }
 }
