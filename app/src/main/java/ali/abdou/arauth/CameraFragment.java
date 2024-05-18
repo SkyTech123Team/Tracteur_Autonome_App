@@ -20,6 +20,9 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+/**
+ * Fragment pour afficher le flux vidéo de la caméra via un WebView.
+ */
 public class CameraFragment extends Fragment {
 
     private ProgressBar superProgressBar;
@@ -28,6 +31,17 @@ public class CameraFragment extends Fragment {
 
     private FirebaseFirestore db;
 
+    /**
+     * Crée et renvoie la vue hiérarchique associée au fragment.
+     *
+     * @param inflater           L'objet LayoutInflater qui peut être utilisé pour gonfler
+     *                           n'importe quelle vue dans le fragment.
+     * @param container          Si non-null, c'est le parent auquel la vue GUI de ce fragment
+     *                           est attachée.
+     * @param savedInstanceState Si non-null, ce fragment est reconstruit à partir d'un état
+     *                           précédemment enregistré.
+     * @return La vue pour l'interface utilisateur du fragment.
+     */
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -41,7 +55,7 @@ public class CameraFragment extends Fragment {
 
         db = FirebaseFirestore.getInstance();
 
-        // Recuperate l'adresse IP depuis la base de données Firebase
+        // Récupère l'adresse IP depuis la base de données Firebase
         db.collection("adresseIP").document("1").get()
                 .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                     @Override
@@ -61,6 +75,11 @@ public class CameraFragment extends Fragment {
         return rootView;
     }
 
+    /**
+     * Charge le WebView avec l'URL de l'adresse IP spécifiée.
+     *
+     * @param adresseIP L'adresse IP à charger dans le WebView.
+     */
     private void loadWebView(String adresseIP) {
         String url = "http://" + adresseIP + ":5000/video_feed";
         superWebView.loadUrl(url);

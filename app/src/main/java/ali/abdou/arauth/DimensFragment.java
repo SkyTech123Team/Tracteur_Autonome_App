@@ -1,42 +1,30 @@
 package ali.abdou.arauth;
 
 import android.os.Bundle;
-
-import androidx.fragment.app.Fragment;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link DimensFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
+import androidx.fragment.app.Fragment;
+
+import java.io.IOException;
+import java.net.HttpURLConnection;
+import java.net.URL;
+
 public class DimensFragment extends Fragment {
-
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
+    private static final String RASPBERRY_PI_URL_PARAMS = "http://192.168.137.165:5000/sendInfo";
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
 
-    // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
 
     public DimensFragment() {
-        // Required empty public constructor
+        // Constructeur public vide requis
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment DimensFragment.
-     */
-    // TODO: Rename and change types and number of parameters
     public static DimensFragment newInstance(String param1, String param2) {
         DimensFragment fragment = new DimensFragment();
         Bundle args = new Bundle();
@@ -55,10 +43,40 @@ public class DimensFragment extends Fragment {
         }
     }
 
+    private void sendHttpRequest(String urlString, int l, int h) {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    URL url = new URL(urlString);
+                    HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
+                    urlConnection.setRequestMethod("POST");
+                    // Définir les paramètres dans le corps de la requête
+                    String postData = "l=" + l + "&h=" + h;
+                    urlConnection.setDoOutput(true);
+                    urlConnection.getOutputStream().write(postData.getBytes());
+                    int responseCode = urlConnection.getResponseCode();
+                    urlConnection.disconnect();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                    // Gérer les erreurs de connexion ici
+                }
+            }
+        }).start();
+    }
+
+    private void executeFunctionOnRaspberryPiPostCoordonnees(int l, int h) {
+        sendHttpRequest(RASPBERRY_PI_URL_PARAMS, l, h);
+    }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_dimens, container, false);
+        View rootView = inflater.inflate(R.layout.fragment_controle, container, false);
+
+
+
+
+        return rootView;
     }
 }

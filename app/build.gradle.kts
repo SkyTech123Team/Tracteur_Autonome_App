@@ -46,6 +46,11 @@ dependencies {
     implementation("androidx.credentials:credentials:1.3.0-alpha01")
     implementation ("com.google.android.material:material:<latest_version>")
     implementation ("com.google.firebase:firebase-firestore:25.0.0")
+    implementation ("com.squareup.retrofit2:retrofit:2.3.0")
+    implementation ("com.squareup.retrofit2:converter-gson:2.1.0")
+    implementation ("com.github.bumptech.glide:glide:4.12.0")
+    annotationProcessor ("com.github.bumptech.glide:compiler:4.12.0")
+    implementation ("com.squareup.okhttp3:okhttp:4.9.2")
 
 //    implementation ("androidx.navigation:navigation-fragment:<latest_version>")
 //    implementation ("androidx.navigation:navigation-ui:<latest_version>")

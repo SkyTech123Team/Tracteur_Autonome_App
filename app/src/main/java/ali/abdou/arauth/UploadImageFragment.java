@@ -1,64 +1,145 @@
 package ali.abdou.arauth;
 
+import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.Bundle;
-
-import androidx.fragment.app.Fragment;
-
+import android.provider.MediaStore;
+import android.util.Base64;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.Toast;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link UploadImageFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.MediaType;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.RequestBody;
+import okhttp3.Response;
+
 public class UploadImageFragment extends Fragment {
 
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
+    private static final int PICK_IMAGE_REQUEST = 1;
+    private static final String RASPBERRY_PI_URL = "http://192.168.137.5:5000/uploadImage";
 
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
+    private ImageView imageView;
+    private Button uploadButton;
+    private Button okButton;
+
+    private Bitmap selectedImageBitmap;
 
     public UploadImageFragment() {
-        // Required empty public constructor
-    }
-
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment UploadImageFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static UploadImageFragment newInstance(String param1, String param2) {
-        UploadImageFragment fragment = new UploadImageFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
-    }
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
+        // Constructeur public vide requis par Fragment
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_upload_image, container, false);
+        View rootView = inflater.inflate(R.layout.fragment_upload_image, container, false);
+
+        imageView = rootView.findViewById(R.id.imageView);
+        uploadButton = rootView.findViewById(R.id.btn2);
+        okButton = rootView.findViewById(R.id.ok);
+
+        uploadButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                openImagePicker();
+            }
+        });
+
+        okButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (selectedImageBitmap != null) {
+                    String base64Image = bitmapToBase64(selectedImageBitmap);
+                    sendImageToRaspberryPi(base64Image);
+                } else {
+                    Toast.makeText(getContext(), "Veuillez d'abord sélectionner une image.", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+
+        return rootView;
+    }
+
+    private void openImagePicker() {
+        Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+        startActivityForResult(intent, PICK_IMAGE_REQUEST);
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == PICK_IMAGE_REQUEST && resultCode == getActivity().RESULT_OK && data != null && data.getData() != null) {
+            try {
+                selectedImageBitmap = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), data.getData());
+                imageView.setImageBitmap(selectedImageBitmap);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    private String bitmapToBase64(Bitmap bitmap) {
+        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayOutputStream);
+        byte[] byteArray = byteArrayOutputStream.toByteArray();
+        return Base64.encodeToString(byteArray, Base64.DEFAULT);
+    }
+
+    private void sendImageToRaspberryPi(String base64Image) {
+        MediaType JSON = MediaType.parse("application/json; charset=utf-8");
+        String json = "{ \"image\": \"" + base64Image + "\" }";
+
+        RequestBody requestBody = RequestBody.create(JSON, json);
+        Request request = new Request.Builder()
+                .url(RASPBERRY_PI_URL) // Correction ici : RASPBERRY_PI_URL sans les guillemets
+                .post(requestBody)
+                .build();
+
+        OkHttpClient client = new OkHttpClient();
+        client.newCall(request).enqueue(new Callback() {
+            @Override
+            public void onResponse(@NonNull Call call, @NonNull Response response) throws IOException {
+                if (response.isSuccessful()) {
+                    getActivity().runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            Toast.makeText(getContext(), "Image envoyée avec succès.", Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                } else {
+                    getActivity().runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            Toast.makeText(getContext(), "Erreur lors de l'envoi de l'image.", Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                }
+
+            }
+
+            @Override
+            public void onFailure(@NonNull Call call, @NonNull IOException e) {
+                getActivity().runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        Toast.makeText(getContext(), "Erreur lors de l'envoi de l'image.", Toast.LENGTH_SHORT).show();
+                    }
+                });
+            }
+        });
     }
 }

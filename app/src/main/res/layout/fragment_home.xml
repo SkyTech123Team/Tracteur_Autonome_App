@@ -3,7 +3,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fillViewport="true"
-    android:background="@color/white">
+    android:background="@color/white"
+    android:scrollbars="vertical">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -11,30 +12,36 @@
         android:orientation="vertical"
         android:padding="16dp">
 
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Welcome to Skytech Remote Tractor Control"
+            android:textAlignment="center"
+            android:textColor="#004C03"
+            android:textSize="25sp"
+            android:textStyle="bold|italic" />
+
         <ImageView
             android:layout_width="match_parent"
-            android:layout_height="300dp"
-            android:src="@drawable/aboutimage"
+            android:layout_height="223dp"
             android:contentDescription="@string/about_us_image_desc"
-            android:scaleType="fitCenter" />
-
-
-<!--        <TextView-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:text="@string/about_us_title"-->
-<!--            android:gravity="center"-->
-<!--            android:textSize="24sp"-->
-<!--            android:textColor="@color/black"-->
-<!--            android:layout_marginTop="16dp"/>-->
+            android:scaleType="centerCrop"
+            android:src="@drawable/img"
+            android:background="@drawable/skytech"/>
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
             android:text="@string/about_us_content"
-            android:textSize="16sp"
+            android:textAlignment="center"
             android:textColor="@color/black"
-            android:layout_marginTop="8dp"/>
+            android:textSize="19sp" />
 
+        <!-- Add extra space at the bottom -->
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="80dp" />
     </LinearLayout>
 </ScrollView>

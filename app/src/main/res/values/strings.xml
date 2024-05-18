@@ -24,7 +24,19 @@
     <string name="fati_Linkdin">www.linkedin.com/in/saadia-ait-ali-mhamed-64b427282</string>
     <string name="close_nav">Close Navigation Drawer</string>
     <string name="about_us_title">About Us</string>
-    <string name="about_us_content">Our app focuses on detecting traditional objects of the old city of Marrakech, Morocco, using augmented reality (AR) technology. It aims to enhance the experience of exploring Marrakech\'s rich cultural heritage by bringing historical artifacts to life through interactive AR displays.</string>
+    <string name="about_us_content">
+    At Skytech, we are revolutionizing agricultural technology with our innovative remote tractor control application. This project is a collaboration between Skytech and Professor Said RAKRAK from the Computer Science Department at FST Marrakech, Cadi Ayyad University.
+
+    Our goal is to develop an autonomous tractor prototype capable of navigating fields independently. Key features include:
+
+    - Autonomous movement using advanced detection and localization technologies to stay on course and adjust in real-time.
+    - Comprehensive field coverage with a navigation system that plans and adjusts routes to avoid omissions and overlaps.
+    - Essential soil preparation tools, including precise digging to specified depths ready for planting.
+    - Automatic seeding capabilities with adjustable depth and spacing based on crop type.
+
+    We are committed to delivering these features within three months, with the project set for completion by the first week of June 2024. Join us as we transform the future of agriculture through technology.
+</string>
+
     <string name="about_us_image_desc">Image representing Marrakech</string>
     <string name="touching_the_skies_of_innovation_every_challenge_transformed">Touching the Skies of Innovation, Every Challenge Transformed</string>
     <string name="arrondissement_de_gu_liz_marrakesh_safi">Arrondissement de Guéliz, Marrakesh-Safi</string>
@@ -42,4 +54,7 @@
     <string name="skytech2130_gmail_com">skytech2130@gmail.com</string>
     <string name="our_company">Our Company</string>
     <string name="descriptionSkytech">At Skytech, we specialize in providing innovative IT solutions for non-profit associations. Our services help organizations overcome challenges and thrive in today\'s digital landscape. Join us as we empower non-profits to make a meaningful impact in their communities.</string>
+
+    <string name="entrerDim">entrez les dimensions</string>
+    <string name="imageDim">entrez une image</string>
 </resources>

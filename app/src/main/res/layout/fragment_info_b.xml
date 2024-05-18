@@ -1,14 +1,29 @@
-<?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".InfoBFragment">
+    android:orientation="vertical"
+    android:gravity="center_vertical|center_horizontal"
+    android:padding="16dp"
+    android:background="@android:color/background_light">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <Button
+        android:id="@+id/dim"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        android:layout_height="wrap_content"
+        android:text="@string/entrerDim"
+        android:textSize="18sp"
+        android:layout_marginBottom="24dp"
+        android:background="@drawable/rounded_button"
+        android:textColor="@android:color/white" />
 
-</FrameLayout>
+    <Button
+        android:id="@+id/img"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/imageDim"
+        android:textSize="18sp"
+        android:background="@drawable/rounded_button"
+        android:textColor="@android:color/white" />
+
+</LinearLayout>
