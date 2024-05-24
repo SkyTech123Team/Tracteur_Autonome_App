@@ -14,7 +14,7 @@ def upload_image():
     if request.method == 'POST':
         if 'image' in request.files:
             image_file = request.files['image']
-            image_path = "chemin_vers_votre_dossier/images/enregistree.jpg"
+            image_path = "/home/pi/Desktop/enregistree.jpg"
             image_file.save(image_path)
             process_image(image_path)  # Appeler la fonction de traitement d'image
             return "Image received and processed successfully."

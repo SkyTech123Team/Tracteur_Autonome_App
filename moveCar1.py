@@ -42,8 +42,8 @@ p_a=GPIO.PWM(en_a,1000)
 p.start(25)
 p_a.start(18)
 
-p.ChangeDutyCycle(20)
-p_a.ChangeDutyCycle(20)
+p.ChangeDutyCycle(10)
+p_a.ChangeDutyCycle(10)
 
 print("\n")
 print("The default speed & direction of motor is LOW & Forward.....")
@@ -134,10 +134,8 @@ def turnRight180():
     GPIO.output(in2, GPIO.HIGH)
     GPIO.output(in3, GPIO.HIGH)  # Reculer moteur droit
     GPIO.output(in4, GPIO.LOW)
-    temp1 = 1
-    x = 'z'
-    time.sleep(5)
-    temp1 = 1
+    time.sleep(0.642)
+    stopCar()
     forward()
     
     
@@ -151,10 +149,11 @@ def turnLeft180():
     GPIO.output(in2, GPIO.LOW)
     GPIO.output(in3, GPIO.LOW)  # Avancer moteur droit 
     GPIO.output(in4, GPIO.HIGH)
-    temp1 = 1
-    x = 'z'
-    time.sleep(5)
-    temp1 = 1
+    #temp1 = 1
+    #x = 'z'
+    time.sleep(0.642)
+    #temp1 = 1
+    stopCar()
     forward()
     
 #cette boucle permet de tester toutes les methodes definies en haut en se basant sur la valeur entree par utilisateur.   

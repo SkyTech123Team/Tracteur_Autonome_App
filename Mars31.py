@@ -1,4 +1,5 @@
 import RPi.GPIO as GPIO
+import time
 from time import sleep
 
 # Define GPIO pins
@@ -30,17 +31,19 @@ p = GPIO.PWM(en, 1000)
 p_a = GPIO.PWM(en_a, 1000)
 p.start(25)
 p_a.start(25)
+p.ChangeDutyCycle(25)
+p_a.ChangeDutyCycle(25)
 
 # Control functions
-def forward():
-    print("forward")
+def backward():
+    print("backward")
     GPIO.output(in1, GPIO.LOW)
     GPIO.output(in2, GPIO.HIGH)
     GPIO.output(in3, GPIO.LOW)
     GPIO.output(in4, GPIO.HIGH)
 
-def backward():
-    print("backward")
+def forward():
+    print("forward")
     GPIO.output(in1, GPIO.HIGH)
     GPIO.output(in2, GPIO.LOW)
     GPIO.output(in3, GPIO.HIGH)
@@ -92,25 +95,56 @@ def testMove():
     sleep(5)
     stopCar()
 
-def move_forward_distance(distance_cm):
-    # Constants
-    wheel_circumference = 18.85  # calculated circumference
-    time_per_cm = 0.2  # This needs calibration: measure time for known distance
 
-    # Calculate total time to move the requested distance
-    total_time = distance_cm * time_per_cm
-
-    # Start moving forward
-    forward()
-
-    # Sleep while moving
-    sleep(total_time)
-
-    # Stop the car
+def turnLeft180():
+    """
+    Cette fonction permet de tourner a gauche de 180 degree 
+    """
+    print("Left 180")
+    GPIO.output(in1, GPIO.HIGH)  # Reculer moteur gauche
+    GPIO.output(in2, GPIO.LOW)
+    GPIO.output(in3, GPIO.LOW)  # Avancer moteur droit 
+    GPIO.output(in4, GPIO.HIGH)
+    #temp1 = 1
+    #x = 'z'
+    time.sleep(0.8)
+    #temp1 = 1
+    stopCar()
+    #forward()
+def turnRight180():
+    """
+    Cette fonction permet de tourner a droite de 180 degree 
+    """
+    print("right 180")
+    GPIO.output(in1, GPIO.LOW)  # Avancer moteur gauche
+    GPIO.output(in2, GPIO.HIGH)
+    GPIO.output(in3, GPIO.HIGH)  # Reculer moteur droit
+    GPIO.output(in4, GPIO.LOW)
+    time.sleep(0.8)
     stopCar()
     
+def move_forward_distance(distance_cm):
+    start =time.time()
+    speed =1.2
+    total_time = distance_cm / speed
+    forward()
+    sleep(total_time)
+    stopCar()
+    #turnLeft180()
+    end = time.time()
+    print (end-start)
+def cover(dis):
+    move_forward_distance(dis)
+    turnLeft180()
+    stopCar()
+    move_forward_distance(dis+0.25)
+    #stopCar()
+    turnRight180()
+    #stopCar()
+    #move_forward_distance(dis+0.25)
+    #stopCar()
 def cover_rectangle(length, width):
-    pass_width = 10  # Width of each pass, adjust based on your tractor's effective width
+    pass_width = 1  # Width of each pass, adjust based on your tractor's effective width
     number_of_passes = int(width / pass_width)
     
     for pass_num in range(number_of_passes):
@@ -148,7 +182,7 @@ try:
         elif x == 's':
             stopCar()
         elif x == 'rt':
-            turnRight()
+            turnRight180()
         elif x == 'lt':
             turnLeft()
         elif x == 'l':
@@ -160,8 +194,11 @@ try:
         elif x == 't':
             testMove()
         elif x == 'd':
-            distance = float(input("Type distance to go (cm): "))
-            move_forward_distance(distance)
+            distance = float(input("Type distance to go (m): "))
+            #move_forward_distance(distance)
+            #for i in 1..5:
+            cover(distance)
+            
         elif x == 'r':
             length = float(input("Enter the length of the rectangle (cm): "))
             width = float(input("Enter the width of the rectangle (cm): "))

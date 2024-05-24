@@ -1,20 +1,10 @@
-"""
-<h3>Ce fichier contient deux fonction qui controlent le mauvement du micro servo soit monter ou descendre le bras</h3>
-
-
-<h3>Auteurs : SAFRANI Fatima Ezzahra</h3>
-
-
-<h3>Version : 1.0</h3>
-"""
-
 import RPi.GPIO as GPIO
 from time import sleep
 
 GPIO.setwarnings(False)
 GPIO.setmode(GPIO.BOARD)
-GPIO.setup(11, GPIO.OUT)
-p = GPIO.PWM(11, 50)
+GPIO.setup(12, GPIO.OUT)
+p = GPIO.PWM(12, 50)
 p.start(0)
 
 def monter_bras():
@@ -32,9 +22,9 @@ def descendre_bras():
 try:
     while True:
         commande = input("Entrez la commande (monter ou descendre): ")
-        if commande == "monter":
+        if commande == "m":
             monter_bras()
-        elif commande == "descendre":
+        elif commande == "d":
             descendre_bras()
         else:
             print("Commande invalide. Entrez monter ou descendre.")

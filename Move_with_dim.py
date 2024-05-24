@@ -1,6 +1,6 @@
 import RPi.GPIO as GPIO
 from time import sleep
-from flask import Flask, request
+from flask import Flask, request, jsonify
 
 app = Flask(__name__)
 
@@ -14,13 +14,13 @@ en_a = 18
 
 # GPIO setup
 GPIO.setmode(GPIO.BCM)
+GPIO.setwarnings(False)  # Disable GPIO warnings
 GPIO.setup(in1, GPIO.OUT)
 GPIO.setup(in2, GPIO.OUT)
 GPIO.setup(en, GPIO.OUT)
 GPIO.setup(in3, GPIO.OUT)
 GPIO.setup(in4, GPIO.OUT)
 GPIO.setup(en_a, GPIO.OUT)
-
 
 # Ensure all pins are low at startup
 GPIO.output(in1, GPIO.LOW)
@@ -36,64 +36,34 @@ p_a.start(25)
 
 # Control functions
 def forward():
-    print("forward")
     GPIO.output(in1, GPIO.LOW)
     GPIO.output(in2, GPIO.HIGH)
     GPIO.output(in3, GPIO.LOW)
     GPIO.output(in4, GPIO.HIGH)
 
 def backward():
-    print("backward")
     GPIO.output(in1, GPIO.HIGH)
     GPIO.output(in2, GPIO.LOW)
     GPIO.output(in3, GPIO.HIGH)
     GPIO.output(in4, GPIO.LOW)
 
 def stopCar():
-    print("stop")
     GPIO.output(in1, GPIO.LOW)
     GPIO.output(in2, GPIO.LOW)
     GPIO.output(in3, GPIO.LOW)
     GPIO.output(in4, GPIO.LOW)
 
 def turnRight():
-    print("right")
     GPIO.output(in1, GPIO.HIGH)
     GPIO.output(in2, GPIO.LOW)
     GPIO.output(in3, GPIO.LOW)
     GPIO.output(in4, GPIO.HIGH)
 
 def turnLeft():
-    print("left")
     GPIO.output(in1, GPIO.LOW)
     GPIO.output(in2, GPIO.HIGH)
     GPIO.output(in3, GPIO.HIGH)
     GPIO.output(in4, GPIO.LOW)
-
-def slowDownCar():
-    print("low")
-    p.ChangeDutyCycle(25)
-    p_a.ChangeDutyCycle(25)
-
-def speedUpCar():
-    print("high")
-    p.ChangeDutyCycle(75)
-    p_a.ChangeDutyCycle(75)
-
-def mediumUpCar():
-    print("medium")
-    p.ChangeDutyCycle(50)
-    p_a.ChangeDutyCycle(50)
-
-def testMove():
-    print("test")
-    forward()
-    sleep(5)
-    turnLeft()
-    sleep(5)
-    backward()
-    sleep(5)
-    stopCar()
 
 def move_forward_distance(distance_cm):
     # Constants
@@ -111,35 +81,56 @@ def move_forward_distance(distance_cm):
 
     # Stop the car
     stopCar()
-    
+
 @app.route('/sendInfo', methods=['POST'])
 def cover_rectangle():
     if request.method == 'POST':
-        data = request.json  # Récupérer les données JSON envoyées depuis l'application Android
-        length = data.get('l')  # Récupérer la dimension de longueur
-        width = data.get('h')
-    pass_width = 10  # Width of each pass, adjust based on your tractor's effective width
-    number_of_passes = int(width / pass_width)
-    
-    for pass_num in range(number_of_passes):
-        # Move forward the full length of the rectangle
-        move_forward_distance(length)
-        # Turn around 180 degrees to come back
-        turnRight()
-        sleep(1)  # Short delay to stabilize after turn
-        turnRight()
-        sleep(1)  # Short delay to stabilize after turn
-        
-        # Move forward the full length of the rectangle
-        move_forward_distance(length)
-        
-        # Prepare for the next pass, if there's more area to cover
-        if pass_num < number_of_passes - 1:
-            # Turn 90 degrees to the right to align for the next pass
+        data = request.json
+        if data is None:
+            return abort(400, description="No data provided.")
+
+        length = data.get('height')
+        width = data.get('width')
+
+        # Check if necessary parameters are present and are of correct type
+        if length is None or width is None:
+            return abort(400, description="Missing 'height' or 'width' parameters.")
+
+        try:
+            length = float(length)  # Ensure length is a float (in case it's a decimal)
+            width = float(width)  # Ensure width is a float (in case it's a decimal)
+            pass_width = 10  # Width of each pass, adjust based on your tractor's effective width
+
+            number_of_passes = int(width / pass_width)
+        except ValueError:
+            return abort(400, description="Invalid 'height' or 'width'. Must be a number.")
+
+        for pass_num in range(number_of_passes):
+            # Move forward the full length of the rectangle
+            move_forward_distance(length)
+            # Turn around 180 degrees to come back
             turnRight()
             sleep(1)  # Short delay to stabilize after turn
-            # Move forward the width of one pass
-            move_forward_distance(pass_width)
-            # Turn 90 degrees to the right again to realign for the next length pass
             turnRight()
             sleep(1)  # Short delay to stabilize after turn
+
+            # Move forward the full length of the rectangle
+            move_forward_distance(length)
+
+            # Prepare for the next pass, if there's more area to cover
+            if pass_num < number_of_passes - 1:
+                # Turn 90 degrees to the right to align for the next pass
+                turnRight()
+                sleep(1)  # Short delay to stabilize after turn
+                # Move forward the width of one pass
+                move_forward_distance(pass_width)
+                # Turn 90 degrees to the right again to realign for the next length pass
+                turnRight()
+                sleep(1)  # Short delay to stabilize after turn
+
+        # Return a response to the client
+        return jsonify({'message': 'Operation successful'})
+
+# Start the Flask app
+if __name__ == '__main__':
+    app.run(host='0.0.0.0', port=5000)
