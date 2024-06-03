@@ -1,3 +1,13 @@
+"""
+<h3> Ce fichier contient la partie d envoi des dimensions de l'application mobile vers la vehicule.</h3>
+
+
+<h3>Auteurs :SAFRANI Fatima Ezzahra </h3>
+
+
+<h3>Version : 1.0</h3>
+
+"""
 import RPi.GPIO as GPIO
 from time import sleep
 from flask import Flask, request, jsonify
@@ -36,36 +46,54 @@ p_a.start(25)
 
 # Control functions
 def forward():
+    """
+    Cette fonction permet de faire une mauvement vers l'avant
+    """
     GPIO.output(in1, GPIO.LOW)
     GPIO.output(in2, GPIO.HIGH)
     GPIO.output(in3, GPIO.LOW)
     GPIO.output(in4, GPIO.HIGH)
 
 def backward():
+    """
+    Cette fonction permet de faire une mauvement vers l'arrier
+    """
     GPIO.output(in1, GPIO.HIGH)
     GPIO.output(in2, GPIO.LOW)
     GPIO.output(in3, GPIO.HIGH)
     GPIO.output(in4, GPIO.LOW)
 
 def stopCar():
+    """
+    Cette fonction permet de faire stopper la vehicule
+    """
     GPIO.output(in1, GPIO.LOW)
     GPIO.output(in2, GPIO.LOW)
     GPIO.output(in3, GPIO.LOW)
     GPIO.output(in4, GPIO.LOW)
 
 def turnRight():
+    """
+    Cette fonction permet de faire un tour a droite
+    """
     GPIO.output(in1, GPIO.HIGH)
     GPIO.output(in2, GPIO.LOW)
     GPIO.output(in3, GPIO.LOW)
     GPIO.output(in4, GPIO.HIGH)
 
 def turnLeft():
+    """
+    Cette fonction permet de faire un tour a gauche
+    """
     GPIO.output(in1, GPIO.LOW)
     GPIO.output(in2, GPIO.HIGH)
     GPIO.output(in3, GPIO.HIGH)
     GPIO.output(in4, GPIO.LOW)
 
 def move_forward_distance(distance_cm):
+    """
+    Cette fonction permet de faire en avant avec une distance donnee
+    """
     # Constants
     wheel_circumference = 18.85  # calculated circumference
     time_per_cm = 0.2  # This needs calibration: measure time for known distance
@@ -84,6 +112,9 @@ def move_forward_distance(distance_cm):
 
 @app.route('/sendInfo', methods=['POST'])
 def cover_rectangle():
+    """
+    Cette fonction permet de couvrir un rectangle en donnant ces dimenssions
+    """
     if request.method == 'POST':
         data = request.json
         if data is None:
