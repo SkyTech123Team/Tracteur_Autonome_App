@@ -24,7 +24,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 
 /**
- * Fragment pour contrôler le mouvement d'un Raspberry Pi via une interface web.
+ * Fragment pour controler le mouvement d'un Raspberry Pi via une interface web.
  *@version 1.0
  *@author AIT ALI MHAMED SAADIA
  */

@@ -21,7 +21,7 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 /**
- * Fragment pour afficher le flux vidéo de la caméra via un WebView.
+ * Fragment pour afficher le flux video de la camera via un WebView.
  *@version 1.0
  *@author AIT ALI MHAMED SAADIA
  */

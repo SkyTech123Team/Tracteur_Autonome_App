@@ -19,6 +19,11 @@ import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
+
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 
@@ -29,25 +34,30 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
-/**
- * UploadImageFragment est un fragment permettant de sélectionner une image,
- * de l'afficher et de l'envoyer à un serveur Raspberry Pi en utilisant une requête HTTP POST.
- *
- * @author SAFRANI Fatima ezzahra
- * @version 1.2
- */
 
+/**
+ * UploadImageFragment est un fragment permettant de selectionner une image,
+ * de l'afficher et de l'envoyer a un serveur Raspberry Pi en utilisant une requete HTTP POST.
+ *
+ * @version 1.2
+ * @author SAFRANI Fatima ezzahra
+ */
 public class UploadImageFragment extends Fragment {
 
     private static final int PICK_IMAGE_REQUEST = 1;
     private static final int REQUEST_PERMISSIONS = 123;
-    private static final String RASPBERRY_PI_URL = "http://192.168.137.5:5000/uploadImage";
+    private static final String RASPBERRY_PI_URL_PREFIX = "http://";
+    private static final String PORT = ":5000/uploadImage";
 
     private ImageView imageView;
     private Button uploadButton;
     private Button okButton;
 
     private Bitmap selectedImageBitmap;
+
+    private FirebaseFirestore db;
+    private String ipAddress = "";
+
     /**
      * Constructeur public vide requis par Fragment.
      */
@@ -55,13 +65,12 @@ public class UploadImageFragment extends Fragment {
         // Constructeur public vide requis par Fragment
     }
 
-
     /**
-     * Crée et retourne la vue associée au fragment.
+     * Cree et retourne la vue associee au fragment.
      *
-     * @param inflater Utilisé pour gonfler la vue du fragment.
-     * @param container Vue parent dans laquelle la vue du fragment est insérée.
-     * @param savedInstanceState Si non-null, ce fragment est en train d'être reconstruit à partir d'un état sauvegardé précédemment.
+     * @param inflater Utilise pour gonfler la vue du fragment.
+     * @param container Vue parent dans laquelle la vue du fragment est inseree.
+     * @param savedInstanceState Si non-null, ce fragment est en train d'etre reconstruit a partir d'un etat sauvegarde precedemment.
      * @return La vue du fragment.
      */
     @Override
@@ -87,7 +96,7 @@ public class UploadImageFragment extends Fragment {
                     String base64Image = bitmapToBase64(selectedImageBitmap);
                     sendImageToRaspberryPi(base64Image);
                 } else {
-                    Toast.makeText(getContext(), "Veuillez d'abord sélectionner une image.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getContext(), "Veuillez d'abord selectionner une image.", Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -103,16 +112,31 @@ public class UploadImageFragment extends Fragment {
             }, REQUEST_PERMISSIONS);
         }
 
+        // Initialise Firestore
+        db = FirebaseFirestore.getInstance();
+
+        // Charger l'adresse IP a partir de Firebase
+        db.collection("adresseIP").document("1").get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if (task.isSuccessful()) {
+                    DocumentSnapshot document = task.getResult();
+                    if (document.exists()) {
+                        ipAddress = document.getString("adresse");
+                    }
+                }
+            }
+        });
+
         return rootView;
     }
 
-
     /**
-     * Gère le résultat de la demande de permissions.
+     * Gère le resultat de la demande de permissions.
      *
      * @param requestCode Le code de demande de permissions.
-     * @param permissions Les permissions demandées.
-     * @param grantResults Les résultats de la demande de permissions.
+     * @param permissions Les permissions demandees.
+     * @param grantResults Les resultats de la demande de permissions.
      */
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
@@ -126,9 +150,8 @@ public class UploadImageFragment extends Fragment {
         }
     }
 
-
     /**
-     * Ouvre le sélecteur d'image pour permettre à l'utilisateur de choisir une image.
+     * Ouvre le selecteur d'image pour permettre a l'utilisateur de choisir une image.
      */
     private void openImagePicker() {
         if (ContextCompat.checkSelfPermission(getContext(), Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
@@ -139,13 +162,12 @@ public class UploadImageFragment extends Fragment {
         }
     }
 
-
     /**
-     * Gère le résultat de l'activité de sélection d'image.
+     * Gère le resultat de l'activite de selection d'image.
      *
      * @param requestCode Le code de demande.
-     * @param resultCode Le code de résultat.
-     * @param data Les données retournées par l'activité.
+     * @param resultCode Le code de resultat.
+     * @param data Les donnees retournees par l'activite.
      */
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
@@ -161,18 +183,17 @@ public class UploadImageFragment extends Fragment {
         } else {
             if (requestCode == PICK_IMAGE_REQUEST) {
                 if (resultCode == getActivity().RESULT_CANCELED) {
-                    Toast.makeText(getContext(), "Sélection d'image annulée.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getContext(), "Selection d'image annulee.", Toast.LENGTH_SHORT).show();
                 }
             }
         }
     }
 
-
     /**
-     * Convertit un Bitmap en chaîne de caractères encodée en base64.
+     * Convertit un Bitmap en chaîne de caractères encodee en base64.
      *
-     * @param bitmap Le Bitmap à convertir.
-     * @return La chaîne de caractères encodée en base64.
+     * @param bitmap Le Bitmap a convertir.
+     * @return La chaîne de caractères encodee en base64.
      */
     private String bitmapToBase64(Bitmap bitmap) {
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
@@ -181,11 +202,10 @@ public class UploadImageFragment extends Fragment {
         return Base64.encodeToString(byteArray, Base64.DEFAULT);
     }
 
-
     /**
-     * Envoie l'image encodée en base64 au serveur Raspberry Pi.
+     * Envoie l'image encodee en base64 au serveur Raspberry Pi.
      *
-     * @param base64Image L'image encodée en base64.
+     * @param base64Image L'image encodee en base64.
      */
     private void sendImageToRaspberryPi(String base64Image) {
         MediaType JSON = MediaType.parse("application/json; charset=utf-8");
@@ -193,7 +213,7 @@ public class UploadImageFragment extends Fragment {
 
         RequestBody requestBody = RequestBody.create(JSON, json);
         Request request = new Request.Builder()
-                .url(RASPBERRY_PI_URL)
+                .url(RASPBERRY_PI_URL_PREFIX + ipAddress + PORT)
                 .post(requestBody)
                 .build();
 
@@ -205,7 +225,7 @@ public class UploadImageFragment extends Fragment {
                     getActivity().runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            Toast.makeText(getContext(), "Image envoyée avec succès.", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getContext(), "Image envoyee avec succès.", Toast.LENGTH_SHORT).show();
                         }
                     });
                 } else {
@@ -216,7 +236,6 @@ public class UploadImageFragment extends Fragment {
                         }
                     });
                 }
-
             }
 
             @Override
