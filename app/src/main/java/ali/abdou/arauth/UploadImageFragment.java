@@ -19,6 +19,11 @@ import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
+
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 
@@ -29,32 +34,36 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
+
 /**
  * UploadImageFragment est un fragment permettant de sélectionner une image,
  * de l'afficher et de l'envoyer à un serveur Raspberry Pi en utilisant une requête HTTP POST.
  *
- * @author SAFRANI Fatima ezzahra
  * @version 1.2
+ * @author SAFRANI Fatima ezzahra
  */
-
 public class UploadImageFragment extends Fragment {
 
     private static final int PICK_IMAGE_REQUEST = 1;
     private static final int REQUEST_PERMISSIONS = 123;
-    private static final String RASPBERRY_PI_URL = "http://192.168.137.5:5000/uploadImage";
+    private static final String RASPBERRY_PI_URL_PREFIX = "http://";
+    private static final String PORT = ":5000/uploadImage";
 
     private ImageView imageView;
     private Button uploadButton;
     private Button okButton;
 
     private Bitmap selectedImageBitmap;
+
+    private FirebaseFirestore db;
+    private String ipAddress = "";
+
     /**
      * Constructeur public vide requis par Fragment.
      */
     public UploadImageFragment() {
         // Constructeur public vide requis par Fragment
     }
-
 
     /**
      * Crée et retourne la vue associée au fragment.
@@ -103,9 +112,24 @@ public class UploadImageFragment extends Fragment {
             }, REQUEST_PERMISSIONS);
         }
 
+        // Initialise Firestore
+        db = FirebaseFirestore.getInstance();
+
+        // Charger l'adresse IP à partir de Firebase
+        db.collection("adresseIP").document("1").get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if (task.isSuccessful()) {
+                    DocumentSnapshot document = task.getResult();
+                    if (document.exists()) {
+                        ipAddress = document.getString("adresse");
+                    }
+                }
+            }
+        });
+
         return rootView;
     }
-
 
     /**
      * Gère le résultat de la demande de permissions.
@@ -126,7 +150,6 @@ public class UploadImageFragment extends Fragment {
         }
     }
 
-
     /**
      * Ouvre le sélecteur d'image pour permettre à l'utilisateur de choisir une image.
      */
@@ -138,7 +161,6 @@ public class UploadImageFragment extends Fragment {
             startActivityForResult(intent, PICK_IMAGE_REQUEST);
         }
     }
-
 
     /**
      * Gère le résultat de l'activité de sélection d'image.
@@ -167,7 +189,6 @@ public class UploadImageFragment extends Fragment {
         }
     }
 
-
     /**
      * Convertit un Bitmap en chaîne de caractères encodée en base64.
      *
@@ -181,7 +202,6 @@ public class UploadImageFragment extends Fragment {
         return Base64.encodeToString(byteArray, Base64.DEFAULT);
     }
 
-
     /**
      * Envoie l'image encodée en base64 au serveur Raspberry Pi.
      *
@@ -193,7 +213,7 @@ public class UploadImageFragment extends Fragment {
 
         RequestBody requestBody = RequestBody.create(JSON, json);
         Request request = new Request.Builder()
-                .url(RASPBERRY_PI_URL)
+                .url(RASPBERRY_PI_URL_PREFIX + ipAddress + PORT)
                 .post(requestBody)
                 .build();
 
@@ -216,7 +236,6 @@ public class UploadImageFragment extends Fragment {
                         }
                     });
                 }
-
             }
 
             @Override

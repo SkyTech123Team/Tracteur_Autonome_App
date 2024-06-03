@@ -13,7 +13,7 @@ import android.view.ViewGroup;
 /**
  * Un simple {@link Fragment} sous-classe représentant la page d'accueil.
  *@version 1.0
- *@author AIT ALI MHAMED SAADIA
+ *@author SAFRANI Fatima ezzahra
  */
 public class HomeFragment extends Fragment {
 
