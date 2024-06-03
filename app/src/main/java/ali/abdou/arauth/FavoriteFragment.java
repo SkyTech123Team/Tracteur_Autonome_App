@@ -12,8 +12,8 @@ import android.view.ViewGroup;
 
 /**
  * Un simple {@link Fragment} sous-classe.
- * Utilisez la méthode {@link FavoriteFragment#newInstance} pour
- * créer une instance de ce fragment.
+ * Utilisez la methode {@link FavoriteFragment#newInstance} pour
+ * creer une instance de ce fragment.
  *@version 1.0
  *@author AIT ALI MHAMED SAADIA
  */

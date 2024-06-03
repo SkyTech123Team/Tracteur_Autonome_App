@@ -11,7 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 /**
- * Un simple {@link Fragment} sous-classe représentant la page d'accueil.
+ * Un simple {@link Fragment} sous-classe representant la page d'accueil.
  *@version 1.0
  *@author SAFRANI Fatima ezzahra
  */
