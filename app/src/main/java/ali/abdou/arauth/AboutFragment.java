@@ -11,6 +11,8 @@ import androidx.fragment.app.Fragment;
  * Un simple {@link Fragment} sous-classe.
  * Utilisez la méthode {@link AboutFragment#newInstance} pour
  * créer une instance de ce fragment.
+ * @version 1.0
+ * @author AIT ALI MHAMED SAADIA
  */
 public class AboutFragment extends Fragment {
 

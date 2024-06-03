@@ -14,6 +14,8 @@ import android.view.ViewGroup;
  * Un simple {@link Fragment} sous-classe.
  * Utilisez la méthode {@link FavoriteFragment#newInstance} pour
  * créer une instance de ce fragment.
+ *@version 1.0
+ *@author AIT ALI MHAMED SAADIA
  */
 public class FavoriteFragment extends Fragment {
 

@@ -12,6 +12,8 @@ import android.view.ViewGroup;
 
 /**
  * Un simple {@link Fragment} sous-classe représentant la page d'accueil.
+ *@version 1.0
+ *@author AIT ALI MHAMED SAADIA
  */
 public class HomeFragment extends Fragment {
 

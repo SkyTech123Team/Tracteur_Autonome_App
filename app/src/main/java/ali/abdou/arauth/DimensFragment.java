@@ -23,7 +23,6 @@ import okhttp3.RequestBody;
 import okhttp3.Response;
 
 /**
-
  * DimensFragment est un fragment qui permet à l'utilisateur de saisir et d'envoyer
  * des dimensions (largeur et hauteur) à un serveur Raspberry Pi.
  *
