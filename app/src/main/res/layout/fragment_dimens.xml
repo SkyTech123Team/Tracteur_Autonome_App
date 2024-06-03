@@ -1,38 +1,44 @@
-<LinearLayout xmlns:app="http://schemas.android.com/apk/res-auto"
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:gravity="center_vertical|center_horizontal"
-    xmlns:android="http://schemas.android.com/apk/res/android">
+    android:gravity="center"
+    android:padding="16dp"
+    android:background="@color/white"
+    tools:context=".DimensFragment">
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Longueur (cm)" />
+        android:text="Enter Dimensions (cm)"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginBottom="16dp" />
 
     <EditText
-        android:id="@+id/length"
-        android:layout_width="200dp"
+        android:id="@+id/editTextWidth"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:ems="10"
-        android:inputType="numberDecimal" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Largeur (cm)" />
+        android:hint="Width"
+        android:inputType="numberDecimal"
+        android:layout_marginBottom="8dp" />
 
     <EditText
-        android:id="@+id/width"
-        android:layout_width="200dp"
+        android:id="@+id/editTextHeight"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:ems="10"
-        android:inputType="numberDecimal" />
+        android:hint="Height"
+        android:inputType="numberDecimal"
+        android:layout_marginBottom="16dp" />
 
     <Button
-        android:id="@+id/btn"
-        android:layout_width="100dp"
+        android:id="@+id/buttonOK"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Valider" />
+        android:text="OK"
+        android:textAllCaps="false" />
 
 </LinearLayout>

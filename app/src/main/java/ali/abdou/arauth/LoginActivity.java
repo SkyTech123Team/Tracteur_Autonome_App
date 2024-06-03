@@ -35,6 +35,8 @@ import com.google.firebase.auth.FirebaseAuth;
 
 /**
  * LoginActivity provides user authentication via email/password and Google Sign-In.
+ *@version 1.0
+ *@author AIT ALI MHAMED SAADIA
  */
 public class LoginActivity extends AppCompatActivity {
     private EditText loginEmail, loginPassword;

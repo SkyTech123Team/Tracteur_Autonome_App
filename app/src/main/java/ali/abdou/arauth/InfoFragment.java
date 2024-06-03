@@ -13,6 +13,8 @@ import androidx.fragment.app.Fragment;
 /**
  * A simple {@link Fragment} subclass that provides options to navigate to
  * either dimension input or image upload fragments.
+ *@version 1.0
+ *@author AIT ALI MHAMED SAADIA
  */
 public class InfoFragment extends Fragment {
 

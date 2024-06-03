@@ -22,6 +22,8 @@ import com.google.firebase.firestore.FirebaseFirestore;
 
 /**
  * Fragment pour afficher le flux vidéo de la caméra via un WebView.
+ *@version 1.0
+ *@author AIT ALI MHAMED SAADIA
  */
 public class CameraFragment extends Fragment {
 
