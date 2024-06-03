@@ -1,7 +1,15 @@
 import RPi.GPIO as GPIO
 import time
 from time import sleep
+"""
+<h3>Ce fichier contient les differentes mouvements possibles qu'on peut effectuer avec la vehicule.</h3>
 
+
+<h3>Auteur : ABDOU Ali & SAFRANI Fatima ezzahra</h3>
+
+
+<h3>Version : 1.0</h3>
+"""
 # Define GPIO pins
 in1 = 24
 in2 = 23
@@ -36,6 +44,9 @@ p_a.ChangeDutyCycle(25)
 
 # Control functions
 def backward():
+    """
+    Cette fonction permet de faire une mauvement vers l'arrier
+    """
     print("backward")
     GPIO.output(in1, GPIO.LOW)
     GPIO.output(in2, GPIO.HIGH)
@@ -43,6 +54,9 @@ def backward():
     GPIO.output(in4, GPIO.HIGH)
 
 def forward():
+    """
+    Cette fonction permet de faire une mauvement vers l'avant
+    """
     print("forward")
     GPIO.output(in1, GPIO.HIGH)
     GPIO.output(in2, GPIO.LOW)
@@ -50,6 +64,9 @@ def forward():
     GPIO.output(in4, GPIO.LOW)
 
 def stopCar():
+    """
+    Cette fonction permet de faire stopper
+    """
     print("stop")
     GPIO.output(in1, GPIO.LOW)
     GPIO.output(in2, GPIO.LOW)
@@ -57,6 +74,9 @@ def stopCar():
     GPIO.output(in4, GPIO.LOW)
 
 def turnRight():
+    """
+    Cette fonction permet de faire un tour a droite
+    """
     print("right")
     GPIO.output(in1, GPIO.HIGH)
     GPIO.output(in2, GPIO.LOW)
@@ -64,6 +84,9 @@ def turnRight():
     GPIO.output(in4, GPIO.HIGH)
 
 def turnLeft():
+    """
+    Cette fonction permet de faire un tour a gauche
+    """
     print("left")
     GPIO.output(in1, GPIO.LOW)
     GPIO.output(in2, GPIO.HIGH)
@@ -71,11 +94,17 @@ def turnLeft():
     GPIO.output(in4, GPIO.LOW)
 
 def slowDownCar():
+    """
+    Cette fonction permet de faire ralentir le tracteur
+    """
     print("low")
     p.ChangeDutyCycle(25)
     p_a.ChangeDutyCycle(25)
 
 def speedUpCar():
+    """
+    Cette fonction permet de faire avancer la vitesse du tracteur
+    """
     print("high")
     p.ChangeDutyCycle(75)
     p_a.ChangeDutyCycle(75)
@@ -124,6 +153,9 @@ def turnRight180():
     stopCar()
     
 def move_forward_distance(distance_cm):
+    """
+    Cette fonction permet de faire une mauvement a partir d une distance donnee
+    """
     start =time.time()
     speed =1.2
     total_time = distance_cm / speed
@@ -143,7 +175,12 @@ def cover(dis):
     #stopCar()
     #move_forward_distance(dis+0.25)
     #stopCar()
+
+
 def cover_rectangle(length, width):
+    """
+    Cette fonction permet de faire couvrir un rectangle en donnant ces dimensions
+    """
     pass_width = 1  # Width of each pass, adjust based on your tractor's effective width
     number_of_passes = int(width / pass_width)
     

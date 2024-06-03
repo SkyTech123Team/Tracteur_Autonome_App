@@ -1,3 +1,15 @@
+"""
+<h3> Ce fichier contient les differentes mouvements possibles qu'on peut effectuer avec la
+vehecule afin de la lie avec la camera .</h3>
+
+
+<h3>Auteurs : EL-MANANI Fatima </h3>
+
+
+<h3>Version : 2.0</h3>
+
+"""
+
 import RPi.GPIO as GPIO
 from time import sleep
 import io
@@ -35,12 +47,18 @@ p_a.start(25)
 
 # Control functions
 def forward():
+    """
+    Cette fonction permet de faire une mauvement vers l'avant
+    """
     print("forward")
     GPIO.output(in1, GPIO.LOW)
     GPIO.output(in2, GPIO.HIGH)
     GPIO.output(in3, GPIO.LOW)
     GPIO.output(in4, GPIO.HIGH)
 def backward():
+    """
+    Cette fonction permet de faire une mauvement vers l'arrier
+    """
     print("backward")
     GPIO.output(in1, GPIO.HIGH)
     GPIO.output(in2, GPIO.LOW)
@@ -48,6 +66,9 @@ def backward():
     GPIO.output(in4, GPIO.LOW)
 
 def stopCar():
+    """
+    Cette fonction permet de faire stopper le tracteur
+    """
     print("stop")
     GPIO.output(in1, GPIO.LOW)
     GPIO.output(in2, GPIO.LOW)
@@ -55,6 +76,9 @@ def stopCar():
     GPIO.output(in4, GPIO.LOW)
 
 def turnRight():
+    """
+    Cette fonction permet de faire un tour a droite
+    """
     print("right")
     GPIO.output(in1, GPIO.HIGH)
     GPIO.output(in2, GPIO.LOW)
@@ -77,6 +101,9 @@ def generate_frames():
         print(f"An error occurred: {e}")
 
 def turnLeft():
+    """
+    Cette fonction permet de faire un tour a gauche
+    """
     print("left")
     GPIO.output(in1, GPIO.LOW)
     GPIO.output(in2, GPIO.HIGH)
@@ -84,6 +111,9 @@ def turnLeft():
     GPIO.output(in4, GPIO.LOW)
 
 def move_forward_distance(distance_cm):
+    """
+    Cette fonction permet de faire une mauvement vers l'avant avec certaine distance
+    """
     # Constants
     wheel_circumference = 18.85  # calculated circumference
     time_per_cm = 0.2  # This needs calibration: measure time for known distance

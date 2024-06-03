@@ -6,11 +6,24 @@ import numpy as np
 import imutils
 import cv2
 
+"""
+<h3> Ce fichier contient la partie de liaison de l'application mobile avec la vehicule.</h3>
+
+
+<h3>Auteurs : SAFRANI Fatima Ezzahra & EL-MANANI Fatima </h3>
+
+
+<h3>Version : 1.0</h3>
+
+"""
 app = Flask(__name__)
 
 # Fonction pour recevoir et enregistrer l'image depuis l'application Android
 @app.route('/uploadImage', methods=['POST'])
 def upload_image():
+    """
+    Cette fonction permet de faire telecharger une image envoyee avec une application mobile
+    """
     if request.method == 'POST':
         if 'image' in request.files:
             image_file = request.files['image']
@@ -23,6 +36,9 @@ def upload_image():
 
 # Fonction pour traiter l'image
 def process_image(image_path):
+    """
+    Cette fonction permet de faire extraire les dimensions a partir d une image envoyee avec une application mobile
+    """
     # Read image and preprocess
     image = cv2.imread(image_path)
 

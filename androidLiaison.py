@@ -1,3 +1,13 @@
+"""
+<h3> Ce fichier contient la partie de liaison de l'application mobile avec la vehicule.</h3>
+
+
+<h3>Auteurs : AIT ALI MHAMED SAADIA & SAFRANI Fatima Ezzahra & EL-MANANI Fatima </h3>
+
+
+<h3>Version : 2.0</h3>
+
+"""
 from flask import Flask, render_template,Response ,request, jsonify
 
 import io
@@ -7,80 +17,73 @@ from time import sleep
 
 #from moveCar1 import forward, backward, turnRight180, turnLeft180, stopCar
 import methods 
-#pip install firebase-admin
-'''import firebase_admin
-from firebase_admin import credentials
-from firebase_admin import firestore
-
-cred = credentials.Certificate("./arauth-c10d2-firebase-adminsdk-2r4dm-15e730230f.json")
-firebase_admin.initialize_app(cred)
-
-db = firestore.client()
-import socket
-
-def get_ip_address():
-    """
-    Cette fonction retourne l'adresse IP de la voiture.
-    """
-    try:
-        # Créer un socket pour obtenir l'adresse IP
-        s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-        # Connecter à un serveur fictif
-        s.connect(("8.8.8.8", 80))
-        # Obtenir l'adresse IP du socket connecté
-        ip_address = s.getsockname()[0]
-        # Fermer le socket
-        s.close()
-        return ip_address
-    except Exception as e:
-        print("Erreur lors de la récupération de l'adresse IP :", str(e))
-        return None
-    
-data=get_ip_address()
-
-
-# Update the document
-doc_ref = db.collection('adresseIP').document('1')
-doc_ref.update({'adresse': data})
-
-
-'''
 
 app = Flask(__name__)
 
 @app.route('/move_forward')
 def move_forward():
+    """
+    Cette fonction permet de faire une mauvement vers l'avant
+    """
     #forward()
     methods.forward()
     return 'Moving forward'
 
 
+
+
 @app.route('/move_backward')
 def move_backward():
+    """
+    Cette fonction permet de faire une mauvement vers l'arrier
+    """
     methods.backward()
     return 'Moving backward'
 
+
+
 @app.route('/move_right')
 def move_right():
+    """
+    Cette fonction permet de tourner a droite de 180 degree 
+    """
     methods.turnRight()
     return 'Turning right'
 
+
 @app.route('/move_left')
 def move_left():
+    """
+    Cette fonction permet de tourner a gauche de 180 degree 
+    """
     methods.turnLeft()
     return 'Turning left'
 
+
 @app.route('/video_feed')
 def video_feed():
+    """
+    Cette fonction permet au user de suivre les mauvements du tracteur a l qide du camera 
+    """
     return Response(methods.generate_frames(),mimetype='multipart/x-mixed-replace; boundary=frame')
+
+
 
 @app.route('/stop')
 def stop():
+    """
+    Cette fonction permet de faire stopper la vehicule
+    """
     methods.stopCar()
     return 'Stopping'
 
+
+
 @app.route('/sendInfo', methods=['POST'])
 def cover_rectangle():
+    """
+    Cette fonction permet de couvrir un rectangle en donnant les dimensions recus a partir de l application mobile
+    """
     if request.method == 'POST':
         data = request.json
         if data is None:

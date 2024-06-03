@@ -1,19 +1,37 @@
+"""
+<h3> Ce fichier contient la partie de liaison de l'application mobile avec la vehicule.</h3>
+
+
+<h3>Auteurs : AIT ALI MHAMED SAADIA & SAFRANI Fatima Ezzahra & EL-MANANI Fatima </h3>
+
+
+<h3>Version : 2.0</h3>
+
+"""
+
 import RPi.GPIO as GPIO
 from time import sleep
 
+# Donner le pins avec lesquels le microservo est lie
 GPIO.setwarnings(False)
-GPIO.setmode(GPIO.BOARD)
-GPIO.setup(12, GPIO.OUT)
-p = GPIO.PWM(12, 50)
+GPIO.setmode(GPIO.BOARD)# donner un pin a partir du board du raspberry pi
+GPIO.setup(12, GPIO.OUT)  
+p = GPIO.PWM(12, 50)# le pin 12 c est lui qui est responssable sur le signal
 p.start(0)
 
 def monter_bras():
+    """
+    Cette fonction permet de monter la bras du microservo
+    """
     p.ChangeDutyCycle(3)  # Position pour monter le bras
     sleep(1)  # Attendre 1 seconde
-    p.ChangeDutyCycle(0)  # Arrêter le servo après le mouvement
+    p.ChangeDutyCycle(0)  # Arreter le servo après le mouvement
     sleep(1)  # Attendre 1 seconde
 
 def descendre_bras():
+    """
+    Cette fonction permet de descendre la bras du microservo
+    """
     p.ChangeDutyCycle(12)  # Position pour descendre le bras
     sleep(1)  # Attendre 1 seconde
     p.ChangeDutyCycle(0)  # Arrêter le servo après le mouvement
