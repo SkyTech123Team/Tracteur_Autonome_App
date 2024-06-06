@@ -7,6 +7,26 @@
     android:padding="16dp"
     android:background="@android:color/background_light">
 
+    <TextView
+        android:id="@+id/sd"
+        style="@style/TextAppearance.AppCompat"
+        android:layout_width="wrap_content"
+        android:layout_height="59dp"
+        android:layout_marginTop="0dp"
+        android:layout_marginBottom="50dp"
+        android:text="@string/start_desc" />
+
+    <Button
+        android:id="@+id/play"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Play"
+        android:textSize="18sp"
+        android:layout_marginBottom="24dp"
+        android:background="@drawable/rounded_button"
+        android:textColor="@android:color/white" />
+
+
     <Button
         android:id="@+id/dimensions"
         android:layout_width="match_parent"
@@ -25,5 +45,7 @@
         android:textSize="18sp"
         android:background="@drawable/rounded_button"
         android:textColor="@android:color/white" />
+
+
 
 </LinearLayout>

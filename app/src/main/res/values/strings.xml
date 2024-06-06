@@ -57,4 +57,5 @@
 
     <string name="entrerDim">entrez les dimensions</string>
     <string name="imageDim">entrez une image</string>
+    <string name="start_desc">Cliquez sur Start pour commencer à contrôler votre tracteur en envoyant les dimensions ou une image.</string>
 </resources>
