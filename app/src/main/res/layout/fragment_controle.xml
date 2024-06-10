@@ -38,63 +38,75 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:gravity="center">
+                    android:gravity="center"
+                    android:orientation="horizontal">
+
+
+                    <Button
+                        android:id="@+id/up"
+                        android:layout_width="60dp"
+                        android:layout_height="100dp"
+                        android:background="@drawable/up"
+                        android:text="U"
+                        android:textColor="#ffffff"
+                        android:textSize="50sp" />
 
                     <Button
                         android:id="@+id/btnForward"
                         android:layout_width="100dp"
                         android:layout_height="100dp"
                         android:background="@drawable/button_background_haut"
-                        android:text=" "
+                        android:text=""
                         android:textColor="#ffffff"
                         android:textSize="50sp" />
+                    <Button
+                        android:id="@+id/down"
+                        android:layout_width="60dp"
+                        android:layout_height="100dp"
+                        android:background="@drawable/down"
+                        android:text="D"
+                        android:textColor="#ffffff"
+                        android:textSize="50sp" />
+
                 </LinearLayout>
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:gravity="center">
+                    android:gravity="center"
+                    android:orientation="horizontal">
 
-                    <LinearLayout
-                        android:layout_width="wrap_content"
+                    <Button
+                        android:id="@+id/btnLeft"
+                        android:layout_width="100dp"
+                        android:layout_height="101dp"
+                        android:background="@drawable/button_background_gauche"
+                        android:textColor="#ffffff"
+                        android:textSize="40sp" />
+
+                    <Button
+                        android:id="@+id/btnStop"
+                        android:layout_width="100dp"
                         android:layout_height="match_parent"
-                        android:orientation="horizontal">
+                        android:background="@drawable/arreter"
+                        android:textColor="#0C0C0C"
+                        android:textSize="23sp" />
 
-                        <Button
-                            android:id="@+id/btnLeft"
-                            android:layout_width="100dp"
-                            android:layout_height="101dp"
-                            android:background="@drawable/button_background_gauche"
-                            android:textColor="#ffffff"
-                            android:textSize="40sp" />
-
-                        <Button
-                            android:id="@+id/btnStop"
-                            android:layout_width="100dp"
-                            android:layout_height="match_parent"
-                            android:background="@drawable/arreter"
-                            android:textColor="#0C0C0C"
-                            android:textSize="23sp" />
-
-                        <Button
-                            android:id="@+id/btnRight"
-                            android:layout_width="100dp"
-                            android:layout_height="101dp"
-                            android:background="@drawable/button_background_droite"
-                            android:text=" "
-                            android:textColor="#ffffff"
-                            android:textSize="40sp" />
-
-                        <androidx.constraintlayout.widget.Barrier
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent" />
-                    </LinearLayout>
+                    <Button
+                        android:id="@+id/btnRight"
+                        android:layout_width="100dp"
+                        android:layout_height="101dp"
+                        android:background="@drawable/button_background_droite"
+                        android:text=" "
+                        android:textColor="#ffffff"
+                        android:textSize="40sp" />
                 </LinearLayout>
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:gravity="center">
+                    android:gravity="center"
+                    android:orientation="horizontal">
 
                     <Button
                         android:id="@+id/btnReverse"
@@ -105,7 +117,6 @@
                         android:textColor="#402E43"
                         android:textSize="40sp" />
                 </LinearLayout>
-
             </LinearLayout>
         </LinearLayout>
     </RelativeLayout>
