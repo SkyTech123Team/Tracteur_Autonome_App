@@ -83,7 +83,7 @@ public class CameraFragment extends Fragment {
      * @param adresseIP L'adresse IP à charger dans le WebView.
      */
     private void loadWebView(String adresseIP) {
-        String url = "http://" + adresseIP + ":5000/video_feed";
+        String url = "http://" + adresseIP + ":5001/video_feed";
         superWebView.loadUrl(url);
         superWebView.getSettings().setJavaScriptEnabled(true);
 

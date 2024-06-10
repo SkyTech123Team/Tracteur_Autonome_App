@@ -24,9 +24,13 @@ import okhttp3.Response;
  *@author SAFRANI Fatima ezzahra
  */
 public class InfoFragment extends Fragment {
+    //Button de dimensions
     private Button btnDims;
+    //Button d'envoie d'image
     private Button btnImg;
+    //Button pour commancer soit par image ou dimensions
     private Button btnPlay;
+    //description pour lancer l'envoi
     private TextView startDesc;
     private OkHttpClient client = new OkHttpClient();
     public InfoFragment() {
@@ -55,6 +59,8 @@ public class InfoFragment extends Fragment {
         btnDims.setVisibility(View.GONE);
         btnImg.setVisibility(View.GONE);
 
+
+
         // Set up click listener for the dimensions button
         btnPlay.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -63,12 +69,12 @@ public class InfoFragment extends Fragment {
                 btnImg.setVisibility(View.VISIBLE);
                 btnPlay.setVisibility(View.GONE);
                 startDesc.setVisibility(View.GONE);
-                // Send HTTP request to start the script on the server
-                sendStartScriptRequest();
             }
         });
 
-        // Set up click listener for the dimensions button
+
+
+        // Si user choisit envoie des dimensions a l aide des inputs de valeurs on va le redireger vers un autre fragment
         btnDims.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -80,7 +86,9 @@ public class InfoFragment extends Fragment {
             }
         });
 
-        // Set up click listener for the image upload button
+
+
+        // Si user choisit envoie des dimensions a l aide de l'image on va le redireger vers un autre fragment
         btnImg.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -91,30 +99,6 @@ public class InfoFragment extends Fragment {
                         .commit();
             }
         });
-
-
         return rootView;
-    }
-    private void sendStartScriptRequest() {
-        String url = "http://<Raspberry_Pi_IP>:5000/start-script"; // Replace <Raspberry_Pi_IP> with your Raspberry Pi's IP
-
-        Request request = new Request.Builder()
-                .url(url)
-                .build();
-
-        // Send the request in a separate thread
-        new Thread(() -> {
-            try {
-                Response response = client.newCall(request).execute();
-                if (response.isSuccessful()) {
-                    // Handle success if needed
-                } else {
-                    // Handle failure if needed
-                }
-            } catch (IOException e) {
-                e.printStackTrace();
-                // Handle exception if needed
-            }
-        }).start();
     }
 }

@@ -25,8 +25,8 @@ import java.net.URL;
 
 /**
  * Fragment pour controler le mouvement d'un Raspberry Pi via une interface web.
- *@version 1.0
- *@author AIT ALI MHAMED SAADIA
+ *@version 1.1
+ *@author AIT ALI MHAMED SAADIA & SAFRANI Fatima ezzahra
  */
 public class ControleFragment extends Fragment {
 
@@ -38,12 +38,16 @@ public class ControleFragment extends Fragment {
     // Définir les constantes pour les URL de Firebase
     private static final String RASPBERRY_PI_URL_BASE = "http://"; // Préfixe de l'URL
     private String ipAddress = ""; // Stocker l'adresse IP récupérée de Firebase
-    private static final String PORT = ":5000"; // Port utilisé
+    private static final String PORT = ":5001"; // Port utilisé
     private static final String MOVE_RIGHT = "/move_right";
     private static final String MOVE_LEFT = "/move_left";
     private static final String MOVE_FORWARD = "/move_forward";
     private static final String MOVE_BACKWARD = "/move_backward";
     private static final String STOP = "/stop";
+    private static final String UP = "/up";
+    private static final String DOWN = "/down";
+
+
 
     public ControleFragment() {
         // Required empty public constructor
@@ -120,6 +124,8 @@ public class ControleFragment extends Fragment {
         Button forward = getView().findViewById(R.id.btnForward);
         Button backward = getView().findViewById(R.id.btnReverse);
         Button stop = getView().findViewById(R.id.btnStop);
+        Button up = getView().findViewById(R.id.up);
+        Button down = getView().findViewById(R.id.down);
 
         right.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -153,6 +159,18 @@ public class ControleFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 executeFunctionOnRaspberryPi(RASPBERRY_PI_URL_BASE + ipAddress + PORT + STOP);
+            }
+        });
+        up.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                executeFunctionOnRaspberryPi(RASPBERRY_PI_URL_BASE + ipAddress + PORT + UP);
+            }
+        });
+        down.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                executeFunctionOnRaspberryPi(RASPBERRY_PI_URL_BASE + ipAddress + PORT + DOWN);
             }
         });
     }
