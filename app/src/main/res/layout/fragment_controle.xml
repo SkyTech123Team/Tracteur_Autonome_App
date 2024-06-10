@@ -44,10 +44,10 @@
 
                     <Button
                         android:id="@+id/up"
-                        android:layout_width="100dp"
+                        android:layout_width="60dp"
                         android:layout_height="100dp"
                         android:background="@drawable/up"
-                        android:text=" "
+                        android:text="U"
                         android:textColor="#ffffff"
                         android:textSize="50sp" />
 
@@ -56,15 +56,15 @@
                         android:layout_width="100dp"
                         android:layout_height="100dp"
                         android:background="@drawable/button_background_haut"
-                        android:text=" "
+                        android:text=""
                         android:textColor="#ffffff"
                         android:textSize="50sp" />
                     <Button
                         android:id="@+id/down"
-                        android:layout_width="100dp"
+                        android:layout_width="60dp"
                         android:layout_height="100dp"
                         android:background="@drawable/down"
-                        android:text=" "
+                        android:text="D"
                         android:textColor="#ffffff"
                         android:textSize="50sp" />
 

@@ -20,7 +20,7 @@
         android:id="@+id/play"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Play"
+        android:text="Start"
         android:textSize="18sp"
         android:layout_marginBottom="24dp"
         android:background="@drawable/rounded_button"
